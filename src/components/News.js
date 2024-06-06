@@ -6,7 +6,8 @@ export class News extends Component {
         super();
         this.state = {
             articles: [],
-            page: 1
+            page: 1,
+            pageSize : 0
         };
     }
 
@@ -14,13 +15,16 @@ export class News extends Component {
         let url = 'https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=f96037738fc54b819ba64924860d1f62&page=1&pageSize=18';
         let data = await fetch(url);
         let parseData = await data.json();
-        this.setState({ articles: parseData.articles });
+        this.setState({ 
+            pageSize:parseData.totalResults/18,
+            articles: parseData.articles });
     }
     handlePrevClick = async () => {
         let url = `https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=f96037738fc54b819ba64924860d1f62&page=${this.state.page-1}&pageSize=18`;
         let data = await fetch(url);
         let parseData = await data.json();
         this.setState({ 
+            pageSize:parseData.totalResults/18,
             page:this.state.page-1,
             articles: parseData.articles });
     }
@@ -29,6 +33,7 @@ export class News extends Component {
         let data = await fetch(url);
         let parseData = await data.json();
         this.setState({ 
+            pageSize:parseData.totalResults/18,
             page:this.state.page+1,
             articles: parseData.articles });
     }
@@ -51,7 +56,7 @@ export class News extends Component {
                     }) : <h1>"We are Sorry!"</h1>}
                     <div className="container d-flex justify-content-around">
                         <button disabled={this.state.page <= 1} type="button" class="btn btn-primary" onClick={this.handlePrevClick}>&larr;Previous</button>
-                        <button type="button" class="btn btn-primary" onClick={this.handleNextClishk}>Next&rarr;</button>
+                        <button disabled={this.state.page >= this.state.pageSize} type="button" class="btn btn-primary" onClick={this.handleNextClishk}>Next&rarr;</button>
                     </div>
                 </div>
             </div>
