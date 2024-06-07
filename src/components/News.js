@@ -15,31 +15,7 @@ export class News extends Component {
         };
     }
     async componentDidMount() {
-            let url = `https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=${this.state.api}&page=1&pageSize=${this.props.pageSize}`;
-            this.setState({ loading: true })
-            let data = await fetch(url);
-            let parseData = await data.json();
-            this.setState({
-                nextSize: parseData.totalResults / this.props.pageSize,
-                articles: parseData.articles,
-                loading: false
-            });
-        
-        if(this.state.articles==null) {
-            await this.setState({api:'2c62ab9ae5024298a933d0dd6f69848f'})
-            let url = `https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=${this.state.api}&page=1&pageSize=${this.props.pageSize}`;
-            this.setState({ loading: true })
-            let data = await fetch(url);
-            let parseData = await data.json();
-            this.setState({
-                nextSize: parseData.totalResults / this.props.pageSize,
-                articles: parseData.articles,
-                loading: false
-            });
-        }
-        if(this.state.articles==null) {
-            await this.setState({api:'f6bc02dc8ed148b49bb3089c9800f5c6'})
-            let url = `https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=${this.state.api}&page=1&pageSize=${this.props.pageSize}`;
+            let url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=${this.state.api}&page=1&pageSize=${this.props.pageSize}`;
             this.setState({ loading: true })
             let data = await fetch(url);
             let parseData = await data.json();
@@ -47,12 +23,39 @@ export class News extends Component {
                 nextSize: parseData.totalResults / this.props.pageSize,
                 articles: parseData.articles,
                 loading: false,
-                notWorking:true
+                page: 1
             });
+        
+        if(this.state.articles==null) {
+            await this.setState({api:'2c62ab9ae5024298a933d0dd6f69848f'})
+            let url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=${this.state.api}&page=1&pageSize=${this.props.pageSize}`;
+            this.setState({ loading: true })
+            let data = await fetch(url);
+            let parseData = await data.json();
+            this.setState({
+                nextSize: parseData.totalResults / this.props.pageSize,
+                articles: parseData.articles,
+                loading: false,
+                page: 1
+            });
+        }
+        if(this.state.articles==null) {
+            await this.setState({api:'f6bc02dc8ed148b49bb3089c9800f5c6'})
+            let url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=${this.state.api}&page=1&pageSize=${this.props.pageSize}`;
+            this.setState({ loading: true })
+            let data = await fetch(url);
+            let parseData = await data.json();
+            this.setState({
+                nextSize: parseData.totalResults / this.props.pageSize,
+                articles: parseData.articles,
+                loading: false,
+                page: 1
+            });
+            !this.state.articles && this.setState({notWorking:false})
         }
     }
     handlePrevClick = async () => {
-        let url = `https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=${this.state.api}&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
+        let url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=${this.state.api}&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
         this.setState({ loading: true })
         let data = await fetch(url);
         let parseData = await data.json();
@@ -64,7 +67,7 @@ export class News extends Component {
         });
     }
     handleNextClishk = async () => {
-        let url = `https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=${this.state.api}&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
+        let url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=${this.state.api}&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
         this.setState({ loading: true })
         let data = await fetch(url);
         let parseData = await data.json();

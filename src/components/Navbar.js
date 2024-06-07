@@ -5,7 +5,7 @@ export class Navbar extends Component {
     render() {
         return (
             <div className='navCont'>
-                <nav className="navbar navbar-expand-lg bg-primary navbar-primary">
+                <nav className="navbar navbar-expand-lg bg-primary navbar-primary" style={{ backgroundColor: ' #e3f2fd' }}>
                     <div className="container-fluid">
                         <Link className="navbar-brand" to="/"><b>NewsBaba</b></Link>
                         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,14 +16,28 @@ export class Navbar extends Component {
                                 <li className="nav-item">
                                     <Link className="nav-link active" to="/">Home</Link>
                                 </li>
+                                <li className="nav-item dropdown">
+                                    <Link className="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Categories
+                                    </Link>
+                                    <ul className="dropdown-menu">
+                                        <li><Link className="dropdown-item" to='/Sport'>Sport</Link></li>
+                                        <li><Link className="dropdown-item" to='Health'>Health</Link></li>
+                                        <li><Link className="dropdown-item" to='/Business' >Business</Link></li>
+                                    </ul>
+                                </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/About">About Us</Link>
                                 </li>
                             </ul>
+                            <form className="d-flex" role="search">
+                                <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                                <button className="btn btn-outline-light" type="submit">Search</button>
+                            </form>
                         </div>
                     </div>
-                </nav>
-            </div>
+                </nav >
+            </div >
         )
     }
 }
