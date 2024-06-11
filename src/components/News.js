@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import NewsItem from './NewsItem';
 import Loading from './Loading';
+import config from '../config';
 
 export class News extends Component {
     constructor() {
@@ -9,83 +10,82 @@ export class News extends Component {
             articles: null,
             page: 1,
             nextSize: 0,
-            loading: false,
-            api:'f96037738fc54b819ba64924860d1f62',
-            notWorking:false
+            loading: true,
+            notWorking: false
         };
     }
-    async componentDidMount() {
-            let url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=${this.state.api}&page=1&pageSize=${this.props.pageSize}`;
-            this.setState({ loading: true })
-            let data = await fetch(url);
-            let parseData = await data.json();
-            this.setState({
-                nextSize: parseData.totalResults / this.props.pageSize,
-                articles: parseData.articles,
-                loading: false,
-                page: 1
-            });
+
+    async fetchNews(apiKey) {
+        const { category, pageSize } = this.props;
+        const { page } = this.state;
+        let url = `${config.baseUrl}?country=in&category=${category}&apiKey=${apiKey}&page=${page}&pageSize=${pageSize}`;
         
-        if(this.state.articles==null) {
-            await this.setState({api:'2c62ab9ae5024298a933d0dd6f69848f'})
-            let url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=${this.state.api}&page=1&pageSize=${this.props.pageSize}`;
-            this.setState({ loading: true })
+        this.setState({ loading: true });
+
+        try {
             let data = await fetch(url);
             let parseData = await data.json();
-            this.setState({
-                nextSize: parseData.totalResults / this.props.pageSize,
-                articles: parseData.articles,
-                loading: false,
-                page: 1
-            });
-        }
-        if(this.state.articles==null) {
-            await this.setState({api:'f6bc02dc8ed148b49bb3089c9800f5c6'})
-            let url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=${this.state.api}&page=1&pageSize=${this.props.pageSize}`;
-            this.setState({ loading: true })
-            let data = await fetch(url);
-            let parseData = await data.json();
-            this.setState({
-                nextSize: parseData.totalResults / this.props.pageSize,
-                articles: parseData.articles,
-                loading: false,
-                page: 1
-            });
-            !this.state.articles && this.setState({notWorking:false})
+            if (parseData.status === 'ok') {
+                this.setState({
+                    nextSize: Math.ceil(parseData.totalResults / pageSize),
+                    articles: parseData.articles,
+                    loading: false,
+                    notWorking: false
+                });
+                return true;
+            } else {
+                throw new Error('API call failed');
+            }
+        } catch (error) {
+            this.setState({ loading: false });
+            return false;
         }
     }
+
+    async componentDidMount() {
+        for (const key of config.apiKeys) {
+            if (await this.fetchNews(key)) {
+                this.setState({ api: key });
+                return;
+            }
+        }
+        
+        this.setState({ notWorking: true, loading: false });
+    }
+
     handlePrevClick = async () => {
-        let url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=${this.state.api}&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
-        this.setState({ loading: true })
-        let data = await fetch(url);
-        let parseData = await data.json();
-        this.setState({
-            nextSize: parseData.totalResults$ / this.props.pageSize,
-            page: this.state.page - 1,
-            articles: parseData.articles,
-            loading: false
-        });
+        if (this.state.page > 1) {
+            await this.setState(
+                { page: this.state.page - 1, loading: true },
+                async () => {
+                    await this.fetchNews(this.state.api);
+                    window.scrollTo(0, 0); // Scroll to top
+                }
+            );
+        }
     }
-    handleNextClishk = async () => {
-        let url = `https://newsapi.org/v2/top-headlines?country=in&category=${this.props.category}&apiKey=${this.state.api}&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
-        this.setState({ loading: true })
-        let data = await fetch(url);
-        let parseData = await data.json();
-        this.setState({
-            nextSize: parseData.totalResults / this.props.pageSize,
-            page: this.state.page + 1,
-            articles: parseData.articles,
-            loading: false
-        });
+
+    handleNextClick = async () => {
+        if (this.state.page < this.state.nextSize) {
+            await this.setState(
+                { page: this.state.page + 1, loading: true },
+                async () => {
+                    await this.fetchNews(this.state.api);
+                    window.scrollTo(0, 0); // Scroll to top
+                }
+            );
+        }
     }
+
     render() {
+        const { loading, articles, notWorking, page, nextSize } = this.state;
         return (
-            <div className='container my-3'>
-                <h2 className='text-center'>NewsBaba - Top Headlines...</h2>
-                {this.state.loading && this.state.articles && <Loading />}
-                <div className="row">
-                    {!this.state.loading && this.state.articles && this.state.articles.map((element) => {
-                        return (
+            <>
+                {loading && <Loading />}
+                <div className='container my-3'>
+                    {articles && <h2 className='text-center' id='heading'>NewsBaba - Top Headlines...</h2>}
+                    <div className="row">
+                        {articles && articles.map((element) => (
                             <div key={element.title} className="col-md-4">
                                 <NewsItem
                                     title={element.title}
@@ -94,19 +94,39 @@ export class News extends Component {
                                     url={element.url}
                                 />
                             </div>
-                        );
-                    })}
-                    {!this.state.articles && this.state.notWorking && <> <Loading />
-                        <h1 className='text-center'>"We are Sorry!"</h1>
-                    </>}
-                    {!this.state.loading && this.state.articles && <div className="container d-flex justify-content-around">
-                        <button disabled={this.state.page <= 1} type="button" className="btn btn-primary" onClick={this.handlePrevClick}>&larr;Previous</button>
-                        <button disabled={this.state.page >= this.state.nextSize} type="button" className="btn btn-primary" onClick={this.handleNextClishk}>Next&rarr;</button>
-                    </div>}
+                        ))}
+                        {notWorking && (
+                            <>
+                                <Loading />
+                                <h1 className='text-center'>"We are Sorry!"</h1>
+                            </>
+                        )}
+                        {articles && (
+                            <div className="container d-flex justify-content-around">
+                                <button
+                                    disabled={page <= 1}
+                                    type="button"
+                                    className="btn btn-primary"
+                                    onClick={this.handlePrevClick}
+                                >
+                                    &larr; Previous
+                                </button>
+                                <button
+                                    disabled={page >= nextSize}
+                                    type="button"
+                                    className="btn btn-primary"
+                                    onClick={this.handleNextClick}
+                                >
+                                    Next &rarr;
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </div>
-            </div>
+            </>
         );
     }
 }
 
 export default News;
+ 

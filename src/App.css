@@ -1,8 +1,9 @@
-.navCont{
+.navCont {
   position: sticky;
   top: 0;
   z-index: 1;
 }
+
 .card {
   display: flex;
   flex-direction: column;
@@ -33,7 +34,8 @@
   justify-content: space-between;
 }
 
-.card-title, .card-text {
+.card-title,
+.card-text {
   display: -webkit-box;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -50,7 +52,16 @@
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   max-height: 7.5em;
-  line-height: 1.5em; 
+  line-height: 1.5em;
+}
+
+.loading {
+  height: '0%';
+  z-index: 3;
+  top: '50%';
+  position: 'fixed';
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* @media only screen and (max-width: 1400px) {
