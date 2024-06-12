@@ -1,10 +1,13 @@
+body{
+  text-align: justify;
+}
 .navCont {
   position: sticky;
   top: 0;
   z-index: 1;
 }
 
-.card {
+.card1 {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -27,28 +30,28 @@
   object-fit: cover;
 }
 
-.card-body {
+.card-body1 {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.card-title,
-.card-text {
+.card-title1,
+.card-text1 {
   display: -webkit-box;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.card-title {
+.card-title1 {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   max-height: 3em;
   line-height: 1.5em;
 }
 
-.card-text {
+.card-text1 {
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   max-height: 7.5em;

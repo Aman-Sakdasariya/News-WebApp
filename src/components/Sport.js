@@ -4,7 +4,7 @@ import News from './News'
 export class Sport extends Component {
   render() {
     return (
-        <News pageSize={this.props.pageSize} category={this.props.category}/>
+        <News pageSize={this.props.pageSize} category={this.props.category} heading={'Sport'}/>
     )
   }
 }

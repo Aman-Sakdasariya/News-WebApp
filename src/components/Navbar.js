@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 export class Navbar extends Component {
+    text
+
     render() {
         return (
             <div className='navCont'>
@@ -24,6 +26,9 @@ export class Navbar extends Component {
                                         <li><Link className="dropdown-item" to='/Sport'>Sport</Link></li>
                                         <li><Link className="dropdown-item" to='Health'>Health</Link></li>
                                         <li><Link className="dropdown-item" to='/Business' >Business</Link></li>
+                                        <li><Link className="dropdown-item" to='/Entertainment' >Entertainment</Link></li>
+                                        <li><Link className="dropdown-item" to='/Science' >Science</Link></li>
+                                        <li><Link className="dropdown-item" to='/Technology' >Technology</Link></li>
                                     </ul>
                                 </li>
                                 <li className="nav-item">
@@ -32,7 +37,9 @@ export class Navbar extends Component {
                             </ul>
                             <form className="d-flex" role="search">
                                 <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                                <button className="btn btn-outline-light" type="submit">Search</button>
+                                <Link>
+                                    <button className="btn btn-outline-light" to='/Search' type="submit">Search</button>
+                                </Link>
                             </form>
                         </div>
                     </div>

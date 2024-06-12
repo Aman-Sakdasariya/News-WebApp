@@ -79,11 +79,12 @@ export class News extends Component {
 
     render() {
         const { loading, articles, notWorking, page, nextSize } = this.state;
+        const { heading="Top Headlines"} = this.props
         return (
             <>
                 {loading && <Loading />}
                 <div className='container my-3'>
-                    {articles && <h2 className='text-center' id='heading'>NewsBaba - Top Headlines...</h2>}
+                    {articles && <h2 className='text-center' id='heading'>NewsBaba - {heading}</h2>}
                     <div className="row">
                         {articles && articles.map((element) => (
                             <div key={element.title} className="col-md-4">

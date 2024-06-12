@@ -6,8 +6,8 @@ class About extends Component {
         <div className="container mt-5">
         <div className="row justify-content-center">
           <div className="col-lg-8">
-            <div className="card shadow-lg">
-              <div className="card-body">
+            <div className="card shadow-lg" style={{height:'auto'}}>
+              <div className="card-body" >
                 <h2 className="card-title text-center mb-4 text-primary">About NewsBaba</h2>
                 <p className="card-text">
                   Welcome to <strong>NewsBaba</strong>, your number one source for all things news. We're dedicated to giving you the very best of daily news, with a focus on <strong>reliability</strong>, <em>accuracy</em>, and <strong>timeliness</strong>.
