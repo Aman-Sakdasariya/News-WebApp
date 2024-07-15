@@ -25,7 +25,7 @@ class About extends Component {
                   We hope you enjoy our news coverage as much as we enjoy offering it to you. If you have any questions or comments, please don't hesitate to contact us. We value your feedback and strive to improve with every edition.
                 </p>
                 <p className="card-text text-center">
-                  <strong>Sincerely,<br /><span className="text-primary">The NewsBaba Team</span></strong>
+                  <strong>Sincerely,<br /><span className="text-primary">The NewsBaba</span></strong>
                 </p>
               </div>
             </div>
